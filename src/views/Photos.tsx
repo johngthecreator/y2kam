@@ -20,7 +20,7 @@ export default function Photos(){
             <div className="h-full flex flex-col gap-3 overflow-y-auto scroll-smooth">
                 <div className="p-20">
                 </div>
-                {photos?.map(photo => {
+                {photos?.sort((a, b) => b.id - a.id).map(photo => {
                     return(
                         <img onClick={()=>downloadPhoto(photo.data, photo.name)} src={photo.data} alt={photo.name} className="rounded"/>
                     )
