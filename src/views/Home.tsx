@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import camImage from "../assets/y2k_cam_sony_vert.png"
 import vhs from "../assets/vhs.jpg"
 import vhs2 from "../assets/vhs2.jpg"
+import { db } from "../db";
 
 export interface IBookResponse {
     author: string,
@@ -57,16 +58,16 @@ export default function Home () {
             canvas.height = video.videoHeight;
 
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            // Draw overlay image
-            context.globalAlpha = 0.20; // Adjust opacity if needed
-            context.drawImage(image, 0, 0, canvas.width, canvas.height); // Adjust position and size of overlay
 
-            context.globalAlpha = 0.10; // Adjust opacity if needed
-            context.drawImage(image2, 0, 0, canvas.width, canvas.height); // Adjust position and size of overlay
+            context.globalAlpha = 0.20;
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            context.globalAlpha = 0.10;
+            context.drawImage(image2, 0, 0, canvas.width, canvas.height);
     
             context.globalAlpha = 1.0;
 
-            const dataUrl = canvas.toDataURL('image/png'); // Base64 format
+            const dataUrl = canvas.toDataURL('image/png');
             setImgURL(dataUrl);
             }
         }
@@ -85,12 +86,22 @@ export default function Home () {
         }
     },[])
 
+    const addPhoto = async (imgData: string) => {
+
+        const id = await db.albumn.add({
+            name:"",
+            data: imgData
+        })
+
+        await db.albumn.update(id, { name: "y2k-" + id });
+    }
+
     useEffect(()=>{
         if(!imgURL) return;
-        const link = document.createElement('a');
-        link.href = imgURL; // Base64 image source
-        link.download = 'y2k.png'; // File name
-        link.click();
+
+        addPhoto(imgURL);
+
+
     },[imgURL])
 
     useEffect(()=>{
@@ -104,9 +115,13 @@ export default function Home () {
         <div className="w-full h-dvh bg-[#89CC04] flex items-center justify-center overflow-hidden p-2">
             <div className='relative overflow-hidden'>
                 <div className='absolute bg-transparent h-full w-full px-9'>
-                    <div className='relative h-3/5 w-full mt-16 bg-[#89CC04] overflow-clip'>
+                    <div className='relative h-3/5 w-full mt-16 bg-blue-600 overflow-clip'>
+                        {videoStream &&
+                            <a href="/photos" className="bottom-10 left-1 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </a>
+                        }
+                        <img src={vhs} className='absolute z-10 opacity-20' />
                         {!videoStream &&
-                            <h2 className='top-5 left-5 absolute text-black'> click any button to turn on cam</h2>
+                            <h2 className='top-5 left-5 absolute text-white'> click any button to turn on cam</h2>
                         }
                         <canvas ref={canvasRef} className='hidden' />
                         <img src={vhs} className='absolute z-10 opacity-20' />

@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import Home from "./views/Home";
+import Photos from "./views/Photos";
 
 const router = createBrowserRouter([
   {
@@ -9,6 +10,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/photos",
+        element: <Photos />,
       },
       // {
       //   path: "test",
