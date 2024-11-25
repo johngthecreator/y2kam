@@ -19,7 +19,7 @@ export interface IBookResponse {
 
 
 export default function Home () {
-    const [isMobile, setIsMobile] = useState<boolean>(false);
+    const [isMobile, setIsMobile] = useState<boolean>(true);
     const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
     const [imgURL, setImgURL] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -74,7 +74,6 @@ export default function Home () {
     };
 
     useEffect(()=>{
-
         if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
             console.log("Let's get this party started")
         }
