@@ -105,6 +105,10 @@ export default function Home () {
     },[imgURL])
 
     useEffect(()=>{
+        if (!videoStream) {
+            getStream();
+        }
+
         if (videoRef.current && videoStream) {
             videoRef.current.srcObject = videoStream;
         }
