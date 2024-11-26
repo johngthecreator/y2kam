@@ -13,9 +13,11 @@ export interface IBookResponse {
     title: string,
 }
 
+const image = new Image();
+image.src = vhs;
 
-
-
+const image2 = new Image();
+image2.src = vhs2;
 
 
 export default function Home () {
@@ -47,12 +49,6 @@ export default function Home () {
 
           if(!context) return;
           // Draw video frame
-          const image = new Image(); // Create an image object
-          image.src = vhs; // Set the imported image as the source
-
-          const image2 = new Image(); // Create an image object
-          image2.src = vhs2; // Set the imported image as the source
-    
           image.onload = async () => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
@@ -104,9 +100,9 @@ export default function Home () {
     },[imgURL])
 
     useEffect(()=>{
-        if (!videoStream) {
-            getStream();
-        }
+        // if (!videoStream) {
+        //     getStream();
+        // }
 
         if (videoRef.current && videoStream) {
             videoRef.current.srcObject = videoStream;
