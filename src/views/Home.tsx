@@ -129,7 +129,7 @@ export default function Home () {
                         <canvas ref={canvasRef} className='hidden' />
                         <img src={vhs} className='absolute z-10 opacity-20' />
                         <img src={vhs2} className='absolute z-10 opacity-10' />
-                        <video className={`h-full w-full object-cover ${isMobile ? '':'-scale-x-100'}`} ref={videoRef} autoPlay playsInline >
+                        <video className={`h-full w-full object-cover ${isMobile ? '':'-scale-x-100'}`} ref={videoRef} autoPlay={true} playsInline={true} >
                         </video>
                     </div>
                 </div>
