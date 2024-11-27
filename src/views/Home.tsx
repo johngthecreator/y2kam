@@ -3,7 +3,7 @@ import camImage from "../assets/y2k_cam_sony_vert.png"
 import vhs from "../assets/vhs.jpg"
 import vhs2 from "../assets/vhs2.jpg"
 import { db } from "../db";
-
+import { useNavigate } from "react-router";
 
 
 export default function Home () {
@@ -12,6 +12,8 @@ export default function Home () {
     const [imgURL, setImgURL] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const [isTakingPhoto, setIsTakingPhoto] = useState<boolean>(false);
+    const navigate = useNavigate();
 
 
 
@@ -33,7 +35,13 @@ export default function Home () {
         setVideoStream(stream);
     }
 
+    const gotoAlbumn = () => {
+        setVideoStream(null);
+        navigate("/photos")
+    }
+
     const captureImageWithOverlay = () => {
+        setIsTakingPhoto(true);
         if (canvasRef.current && videoRef.current) {
           const canvas = canvasRef.current;
           const video = videoRef.current;
@@ -66,7 +74,6 @@ export default function Home () {
             context.globalAlpha = 1.0;
 
             const dataUrl = canvas.toDataURL('image/png');
-            console.log("image taken")
             setImgURL(dataUrl);
             })
         }
@@ -82,7 +89,6 @@ export default function Home () {
         }else{
            setIsMobile(false);
         }
-        console.log("running on back return: mobile size")
     },[])
 
     const addPhoto = async (imgData: string) => {
@@ -93,11 +99,11 @@ export default function Home () {
         })
 
         await db.albumn.update(id, { name: "y2k-" + id });
+        setIsTakingPhoto(false);
     }
 
     useEffect(()=>{
         if(!imgURL) return;
-        console.log("running on back return: imgURL")
 
         addPhoto(imgURL);
 
@@ -105,12 +111,6 @@ export default function Home () {
     },[imgURL])
 
     useEffect(()=>{
-        // if (!videoStream) {
-        //     getStream();
-        // }
-
-        console.log("running on back return: video stream")
-
         if (videoRef.current && videoStream) {
             videoRef.current.srcObject = videoStream;
         }
@@ -120,13 +120,16 @@ export default function Home () {
 
         <div className="w-full h-dvh bg-[#89CC04] flex items-center justify-center overflow-hidden p-2">
             <div className='relative overflow-hidden'>
-                <div className='absolute bg-transparent h-full w-full px-9'>
+                <div className='absolute bg-transparent h-full flex w-full px-9'>
                     <div className='relative h-3/5 w-full mt-16 bg-blue-600 overflow-clip'>
-                        {videoStream &&
-                            <a href="/photos" className="bottom-10 -left-1 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </a>
+                        {(videoStream && !isTakingPhoto) &&
+                            <button onClick={()=>gotoAlbumn()} className="bottom-10 -left-1 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </button>
                         }
                         {!videoStream &&
                             <h2 className='top-5 left-5 absolute text-white'> click any button to turn on cam</h2>
+                        }
+                        {isTakingPhoto && 
+                            <div className="h-full bg-slate-900"></div>
                         }
                         <canvas ref={canvasRef} className='hidden' />
                         <img src={vhs} className='absolute z-10 opacity-20' />
