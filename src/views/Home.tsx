@@ -47,8 +47,11 @@ export default function Home () {
 
           const image2 = new Image();
           image2.src = vhs2;
-          // Draw video frame
-          image.onload = async () => {
+
+          Promise.all([
+            new Promise(resolve => image.onload = resolve),
+            new Promise(resolve => image2.onload = resolve)
+          ]).then(() => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 
@@ -65,7 +68,7 @@ export default function Home () {
             const dataUrl = canvas.toDataURL('image/png');
             console.log("image taken")
             setImgURL(dataUrl);
-            }
+            })
         }
     };
 
@@ -79,6 +82,7 @@ export default function Home () {
         }else{
            setIsMobile(false);
         }
+        console.log("running on back return: mobile size")
     },[])
 
     const addPhoto = async (imgData: string) => {
@@ -93,6 +97,7 @@ export default function Home () {
 
     useEffect(()=>{
         if(!imgURL) return;
+        console.log("running on back return: imgURL")
 
         addPhoto(imgURL);
 
@@ -103,6 +108,8 @@ export default function Home () {
         // if (!videoStream) {
         //     getStream();
         // }
+
+        console.log("running on back return: video stream")
 
         if (videoRef.current && videoStream) {
             videoRef.current.srcObject = videoStream;
@@ -116,7 +123,7 @@ export default function Home () {
                 <div className='absolute bg-transparent h-full w-full px-9'>
                     <div className='relative h-3/5 w-full mt-16 bg-blue-600 overflow-clip'>
                         {videoStream &&
-                            <a href="/photos" className="bottom-10 left-1 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </a>
+                            <a href="/photos" className="bottom-10 -left-1 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </a>
                         }
                         {!videoStream &&
                             <h2 className='top-5 left-5 absolute text-white'> click any button to turn on cam</h2>
