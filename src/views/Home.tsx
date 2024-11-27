@@ -4,20 +4,6 @@ import vhs from "../assets/vhs.jpg"
 import vhs2 from "../assets/vhs2.jpg"
 import { db } from "../db";
 
-export interface IBookResponse {
-    author: string,
-    desc: string,
-    genres: string[],
-    isbn: number,
-    link: string,
-    title: string,
-}
-
-const image = new Image();
-image.src = vhs;
-
-const image2 = new Image();
-image2.src = vhs2;
 
 
 export default function Home () {
@@ -28,14 +14,22 @@ export default function Home () {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
 
+
     const mobile_constraints = {
         video: {
-            facingMode: { exact: "environment" }
+            facingMode: { exact: "environment" },
+            width: { exact: 640 },
+            height: { exact: 480 },
+            frameRate: { ideal: 15 }
         }
     };
 
     const getStream = async () => {
-        const stream = await navigator.mediaDevices.getUserMedia(isMobile ? mobile_constraints : {video: true});
+        const stream = await navigator.mediaDevices.getUserMedia(isMobile ? mobile_constraints : {video: { 
+            width: { exact: 640 },
+            height: { exact: 480 },
+            frameRate: { ideal: 15 }}
+        });
         setVideoStream(stream);
     }
 
@@ -48,6 +42,11 @@ export default function Home () {
           canvas.height = video.videoHeight;
 
           if(!context) return;
+          const image = new Image();
+          image.src = vhs;
+
+          const image2 = new Image();
+          image2.src = vhs2;
           // Draw video frame
           image.onload = async () => {
             canvas.width = video.videoWidth;
@@ -58,12 +57,13 @@ export default function Home () {
             context.globalAlpha = 0.20;
             context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-            context.globalAlpha = 0.10;
+            context.globalAlpha = 0.30;
             context.drawImage(image2, 0, 0, canvas.width, canvas.height);
     
             context.globalAlpha = 1.0;
 
             const dataUrl = canvas.toDataURL('image/png');
+            console.log("image taken")
             setImgURL(dataUrl);
             }
         }
@@ -118,13 +118,12 @@ export default function Home () {
                         {videoStream &&
                             <a href="/photos" className="bottom-10 left-1 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </a>
                         }
-                        <img src={vhs} className='absolute z-10 opacity-20' />
                         {!videoStream &&
                             <h2 className='top-5 left-5 absolute text-white'> click any button to turn on cam</h2>
                         }
                         <canvas ref={canvasRef} className='hidden' />
                         <img src={vhs} className='absolute z-10 opacity-20' />
-                        <img src={vhs2} className='absolute z-10 opacity-10' />
+                        <img src={vhs2} className='absolute z-10 opacity-30 object-cover' />
                         <video className={`h-full w-full object-cover ${isMobile ? '':'-scale-x-100'}`} ref={videoRef} autoPlay={true} playsInline={true} >
                         </video>
                     </div>
