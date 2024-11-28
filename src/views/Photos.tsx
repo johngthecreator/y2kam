@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router";
 import { db } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
 
 export default function Photos(){
+    const navigate = useNavigate();
     const downloadPhoto = (imgURL: string, photoName: string) => {
         if(!imgURL) return;
         const link = document.createElement('a');
@@ -15,7 +17,7 @@ export default function Photos(){
         <div className="h-dvh w-full p-2 bg-[#89CC04]">
             <div className="absolute div justify-between items-center p-2">
                 <h1 className="text-3xl font-archivo font-bold">photos <br /> and they're still mine <br />  but just vibey.</h1>
-                <a href="/" className="text-xl font-archivo">back 2 camera</a>
+                <button onClick={()=>navigate("/")} className="text-xl font-archivo">back 2 camera</button>
             </div>
             <div className="h-full flex flex-col gap-3 overflow-y-auto scroll-smooth">
                 <div className="p-20">
