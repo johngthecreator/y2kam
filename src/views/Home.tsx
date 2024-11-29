@@ -73,7 +73,7 @@ export default function Home () {
     
             context.globalAlpha = 1.0;
 
-            const dataUrl = canvas.toDataURL('image/png');
+            const dataUrl = canvas.toDataURL('image/jpeg');
             setImgURL(dataUrl);
             })
         }

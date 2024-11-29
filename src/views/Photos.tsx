@@ -8,7 +8,7 @@ export default function Photos(){
         if(!imgURL) return;
         const link = document.createElement('a');
         link.href = imgURL;
-        link.download = photoName + ".png";
+        link.download = photoName + ".jpg";
         link.click();
     }
 
