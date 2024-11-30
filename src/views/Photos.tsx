@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router";
 import { db } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useEffect } from "react";
 
 export default function Photos(){
     const navigate = useNavigate();

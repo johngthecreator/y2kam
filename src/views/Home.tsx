@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import camImage from "../assets/y2k_cam_sony_vert.png"
-import vhs from "../assets/vhs.jpg"
-import vhs2 from "../assets/vhs2.jpg"
 import digi from "../assets/digi.jpg"
 import { db } from "../db";
 import film from "../assets/film.jpg"
