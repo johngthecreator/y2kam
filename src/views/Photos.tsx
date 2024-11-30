@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router";
 import { db } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
+import { Aperture, ImageDown, Info, Trash2 } from "lucide-react";
+
 
 export default function Photos(){
     const navigate = useNavigate();
@@ -28,24 +30,41 @@ export default function Photos(){
     }
 
 
-    return(
-        <div className="h-dvh w-full p-2 bg-[#89CC04]">
-            <div className="absolute div justify-between items-center p-2">
-                <h1 className="text-3xl font-archivo font-bold">photos <br /> and they're still mine <br />  but just vibey.</h1>
-                <button onClick={()=>navigate("/")} className="text-xl font-archivo">back 2 camera</button>
-            </div>
-            <div className="absolute right-1 div justify-between items-center p-2">
-                <button onClick={()=>db.albumn.clear()} className="text-3xl font-archivo text-right font-bold">clear <br /> camera</button>
-            </div>
-            <div className="h-full flex flex-col gap-3 overflow-y-auto scroll-smooth">
-                <div className="p-20">
-                </div>
-                {photos?.sort((a, b) => b.id - a.id).map(photo => {
-                    return(
-                        <img onClick={()=>downloadPhoto(photo.data, photo.name)} src={createURL(photo.data)} alt={photo.name} className="rounded"/>
-                    )
-                })}
 
+    return(
+        <div className="h-dvh w-full flex flex-col px-2 pt-2 bg-[#f9f9f9]">
+            {(photos && photos?.length > 0) ? (
+                <div className="h-full flex flex-col gap-4 overflow-y-auto scroll-smooth">
+                    {photos?.sort((a, b) => b.id - a.id).map(photo => {
+                        const side = (Math.floor(Math.random() * 2) == 1 ? true : false);
+                        const imgSize = Math.round(photo.data.size / 1000);
+                        return(
+                            <div className={`flex flex-col w-3/4 gap-1 ${side ? 'self-start':'self-end'}`}>
+                                <img onClick={()=>downloadPhoto(photo.data, photo.name)} src={createURL(photo.data)} alt={photo.name} />
+                                <div className="flex flex-row justify-between">
+                                    <h2>{photo.name}</h2>
+                                    <p className="text-gray-400">{imgSize} kb</p>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+
+            ):(
+                <div className="h-full w-full flex items-center justify-center gap-3">
+                    <h2 className="text-gray-500">No Photos Yet.</h2>
+                </div>
+            )
+            }
+            <div className="w-full flex flex-row items-center justify-evenly py-4">
+                <button onClick={()=>navigate("/")}>
+                    <Aperture />
+                </button>
+                <ImageDown />
+                <button onClick={()=>db.albumn.clear()}>
+                    <Trash2 />
+                </button>
+                <Info />
             </div>
         </div>
     )

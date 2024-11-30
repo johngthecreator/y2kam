@@ -109,7 +109,7 @@ export default function Home () {
             data: imgData
         })
 
-        await db.albumn.update(id, { name: "y2k-" + id });
+        await db.albumn.update(id, { name: "Y2K-" + id });
         setIsTakingPhoto(false);
     }
 
@@ -126,10 +126,10 @@ export default function Home () {
 
     return(
 
-        <div className="w-full h-dvh bg-[#89CC04] flex items-center justify-center overflow-hidden p-2">
+        <div className="w-full h-dvh bg-[#f9f9f9] flex items-center justify-center overflow-hidden p-2">
             <div className='relative overflow-hidden'>
                 <div className='absolute bg-transparent h-full flex w-full px-9'>
-                    <div className='relative h-3/5 w-full mt-16 bg-blue-600 overflow-clip'>
+                    <div className='relative h-3/5 w-full -left-0.5 mt-16 bg-blue-600 overflow-clip'>
                         {(videoStream && !isTakingPhoto) &&
                             <button onClick={()=>gotoAlbumn()} className="bottom-10 -left-1.5 rounded-sm bg-black opacity-55 absolute text-white z-50 p-1 text-sm rotate-90"> PHOTOS </button>
                         }
