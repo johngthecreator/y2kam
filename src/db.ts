@@ -3,7 +3,7 @@ import Dexie, { type EntityTable } from 'dexie';
 interface Photo {
   id: number;
   name: string;
-  data: string;
+  data: Blob;
 }
 
 const db = new Dexie('Y2KPhotosDB') as Dexie & {
