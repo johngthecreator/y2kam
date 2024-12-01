@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import camImage from "../assets/y2k_cam_sony_vert.png"
-import digi from "../assets/digi.jpg"
-import { db } from "../db";
+import digi from "../assets/digi-s.jpg"
 import film from "../assets/film.jpg"
+import dreamy from "../assets/dreamy.jpg"
+import wavy from "../assets/wavy-s.jpg"
+import { db } from "../db";
 import { useNavigate } from "react-router";
 import { Blend } from "lucide-react";
 
@@ -17,7 +19,7 @@ export default function Home () {
     const [filterCounter, setFilterCounter] = useState<number>(0);
     const navigate = useNavigate();
 
-    const filters = [digi, film]
+    const filters = [digi, film, dreamy, wavy]
 
 
 
@@ -66,7 +68,9 @@ export default function Home () {
 
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            context.globalAlpha = 0.30;
+            context.globalCompositeOperation = 'multiply';
+
+            context.globalAlpha = 0.40;
             context.drawImage(image, 0, 0, canvas.width, canvas.height);
     
             context.globalAlpha = 1.0;
@@ -83,7 +87,7 @@ export default function Home () {
     };
 
     const shuffleFilter = () => {
-        if(filterCounter == 1){
+        if(filterCounter == 4){
             setFilterCounter(0);
         }else{
             setFilterCounter(filterCounter + 1);
@@ -143,7 +147,9 @@ export default function Home () {
                             <div className="h-full bg-slate-900"></div>
                         }
                         <canvas ref={canvasRef} className='hidden' />
-                        <img src={filters[filterCounter]} className='absolute z-10 opacity-30 object-cover h-full w-full' />
+                        {filterCounter <= 3 &&
+                            <img src={filters[filterCounter]} className='absolute z-10 opacity-30 object-cover h-full w-full' />
+                        }
                         <video className={`h-full w-full object-cover ${isMobile ? '':'-scale-x-100'}`} ref={videoRef} autoPlay={true} playsInline={true} >
                         </video>
                     </div>
