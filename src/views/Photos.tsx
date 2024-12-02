@@ -1,22 +1,41 @@
 import { useNavigate } from "react-router";
-import { db } from "../db";
+import { db, Photo } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Aperture, ImageDown, Info, Trash2 } from "lucide-react";
 
 
 export default function Photos(){
     const navigate = useNavigate();
-    const downloadPhoto = (imgData: Blob, photoName: string) => {
-        if(!imgData) return;
-        const link = document.createElement('a');
-        const imgURL = createURL(imgData);
-        link.href = imgURL;
-        link.download = photoName + ".jpg";
-        link.click();
-    }
+    
+
+    // const downloadPhoto = (imgData: Blob, photoName: string) => {
+    //     if(!imgData) return;
+    //     const link = document.createElement('a');
+    //     const imgURL = createURL(imgData);
+    //     link.href = imgURL;
+    //     link.download = photoName + ".jpg";
+    //     link.click();
+    // }
 
     const createURL = (imageData: Blob) => {
         return URL.createObjectURL(imageData)
+    }
+
+    const shareNotes = (imgBlob: Photo) => {
+        if (navigator.share && imgBlob.data) {
+          navigator.share({
+            files: [
+              new File([imgBlob.data], `${imgBlob.name}.jpg`, {
+                type: "image/jpeg",
+              })
+            ]
+          })
+          .then(() => console.log('Successful share'))
+          .catch(error => console.log('Error sharing:', error));
+        }
+        else{
+          alert("not working")
+        }
     }
 
     const photos = useLiveQuery(() => db.albumn.toArray());
@@ -40,7 +59,7 @@ export default function Photos(){
                         const imgSize = Math.round(photo.data.size / 1000);
                         return(
                             <div className={`flex flex-col w-3/4 gap-1 ${side ? 'self-start':'self-end'}`}>
-                                <img onClick={()=>downloadPhoto(photo.data, photo.name)} src={createURL(photo.data)} alt={photo.name} />
+                                <img onClick={()=>shareNotes(photo)} src={createURL(photo.data)} alt={photo.name} />
                                 <div className="flex flex-row justify-between">
                                     <h2>{photo.name}</h2>
                                     <p className="text-gray-400">{imgSize} kb</p>

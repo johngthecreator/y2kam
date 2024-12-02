@@ -68,6 +68,17 @@ export default function Home () {
 
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+            // --- Saving for later ---
+
+            // context.globalCompositeOperation = 'lighten';
+            // context.globalAlpha = 0.15; // Set opacity to 15%
+            // context.fillStyle = 'blue'; // Set fill color to blue
+            // context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // context.globalAlpha = 0.15; // Set opacity to 15%
+            // context.fillStyle = 'orange'; // Solid orange color
+            // context.fillRect(0, 0, canvas.width, canvas.height);
+
             context.globalCompositeOperation = 'multiply';
 
             context.globalAlpha = 0.40;
