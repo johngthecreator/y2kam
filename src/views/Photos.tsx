@@ -75,7 +75,7 @@ export default function Photos(){
                 </div>
             )
             }
-            <div className="w-full flex flex-row items-center justify-evenly py-4">
+            <div id="navbar" className="w-full flex flex-row items-center justify-evenly py-4">
                 <button onClick={()=>navigate("/")}>
                     <Aperture />
                 </button>
