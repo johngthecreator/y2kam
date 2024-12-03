@@ -26,8 +26,8 @@ export default function Home () {
     const mobile_constraints = {
         video: {
             facingMode: { exact: "environment" },
-            // width: { exact: 640 },
-            // height: { exact: 480 },
+            width: { exact: 1024 },
+            height: { exact: 768 },
             // frameRate: { ideal: 15 }
         }
     };
