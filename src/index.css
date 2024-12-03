@@ -7,5 +7,7 @@
 
 #navbar {
     margin-bottom: 1rem;
-    margin-bottom: env(safe-area-inset-bottom, 1rem);
+    @supports (margin-bottom: env(safe-area-inset-bottom)) {
+        margin-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
 }
