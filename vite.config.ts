@@ -10,7 +10,16 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      workbox: {
+        globPatterns: [
+          '*.{js,css,html,ico,png,svg}',
+        ]
+      },
+      includeAssets: [
+        'favicon.ico', 
+        'apple-touch-icon.png', 
+        'assets/**'
+      ],
       manifest: {
           "name": "A Lame Camera",
           "short_name": "LameCam",
